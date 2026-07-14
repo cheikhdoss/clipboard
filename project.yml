@@ -14,6 +14,7 @@ targets:
     platform: iOS
     sources:
       - ClipFlow
+      - Shared
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.clipflow.app
       INFOPLIST_FILE: ClipFlow/Resources/Info.plist
@@ -74,6 +75,7 @@ targets:
     platform: iOS
     sources:
       - ClipFlowPIP
+      - Shared
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.clipflow.app.pip
       INFOPLIST_FILE: ClipFlowPIP/Info.plist

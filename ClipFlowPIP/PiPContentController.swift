@@ -101,7 +101,7 @@ final class PiPContentController: UIViewController {
             // Count label
             let countStr = "\(store.allItems.count)"
             let countAttr: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 10, weight: .medium, design: .rounded),
+                .font: roundedFont(ofSize: 10, weight: .medium),
                 .foregroundColor: UIColor.white.withAlphaComponent(0.3)
             ]
             (countStr as NSString).draw(at: CGPoint(x: w - 56, y: 14), withAttributes: countAttr)
@@ -123,7 +123,7 @@ final class PiPContentController: UIViewController {
 
                 // Type label
                 let typeLabelAttr: [NSAttributedString.Key: Any] = [
-                    .font: UIFont.systemFont(ofSize: 9, weight: .semibold, design: .rounded),
+                    .font: roundedFont(ofSize: 9, weight: .semibold),
                     .foregroundColor: typeColor
                 ]
                 (latest.type.rawValue.uppercased() as NSString).draw(
@@ -143,7 +143,7 @@ final class PiPContentController: UIViewController {
                 let paraStyle = NSMutableParagraphStyle()
                 paraStyle.lineSpacing = 3
                 let contentAttr: [NSAttributedString.Key: Any] = [
-                    .font: UIFont.systemFont(ofSize: 12, weight: .regular, design: .monospaced),
+                    .font: UIFont.monospacedSystemFont(ofSize: 12, weight: .regular),
                     .foregroundColor: UIColor.white.withAlphaComponent(0.75),
                     .paragraphStyle: paraStyle
                 ]
@@ -180,7 +180,7 @@ final class PiPContentController: UIViewController {
                 }
 
                 let emptyAttr: [NSAttributedString.Key: Any] = [
-                    .font: UIFont.systemFont(ofSize: 13, weight: .medium, design: .rounded),
+                    .font: roundedFont(ofSize: 13, weight: .medium),
                     .foregroundColor: UIColor.white.withAlphaComponent(0.2)
                 ]
                 ("En attente..." as NSString).draw(at: CGPoint(x: 60, y: h/2 + 8), withAttributes: emptyAttr)
@@ -254,4 +254,10 @@ extension PiPContentController: AVPictureInPictureSampleBufferPlaybackDelegate {
         CMTimeRange(start: .zero, duration: .positiveInfinity)
     }
     func pictureInPictureControllerIsPlaybackPaused(_: AVPictureInPictureController) -> Bool { false }
+}
+
+private func roundedFont(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
+    let base = UIFont.systemFont(ofSize: size, weight: weight)
+    let descriptor = base.fontDescriptor.withDesign(.rounded) ?? base.fontDescriptor
+    return UIFont(descriptor: descriptor, size: size)
 }
