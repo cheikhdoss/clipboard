@@ -1,0 +1,62 @@
+name: Build ClipFlow IPA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build & Export IPA
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build Archive
+        run: |
+          xcodebuild archive \
+            -project ClipFlow.xcodeproj \
+            -scheme ClipFlow \
+            -configuration Release \
+            -archivePath /tmp/ClipFlow.xcarchive \
+            -sdk iphoneos \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO
+
+      - name: Package IPA
+        run: |
+          # Create Payload directory
+          mkdir -p /tmp/ipa/Payload
+          cp -r /tmp/ClipFlow.xcarchive/Products/Applications/ClipFlow.app /tmp/ipa/Payload/
+
+          # Embed app extensions
+          EXTENSIONS_DIR="/tmp/ClipFlow.xcarchive/Products/Applications/ClipFlow.app/PlugIns"
+          mkdir -p /tmp/ipa/Payload/ClipFlow.app/PlugIns
+
+          if [ -d "$EXTENSIONS_DIR" ]; then
+            cp -r "$EXTENSIONS_DIR"/* /tmp/ipa/Payload/ClipFlow.app/PlugIns/ 2>/dev/null || true
+          fi
+
+          # Create IPA
+          cd /tmp/ipa
+          zip -r ClipFlow.ipa Payload/ -y
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: ClipFlow-iOS
+          path: /tmp/ipa/ClipFlow.ipa
+          retention-days: 7
