@@ -83,7 +83,7 @@ final class ClipboardStore {
         allItems.first
     }
 
-    var hasItem(_ content: String) -> Bool {
+    func hasItem(_ content: String) -> Bool {
         cachedItems.contains { $0.content == content }
     }
 
