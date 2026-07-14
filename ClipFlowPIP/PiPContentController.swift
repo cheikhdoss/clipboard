@@ -250,6 +250,10 @@ extension PiPContentController: AVPictureInPictureControllerDelegate {
 
 extension PiPContentController: AVPictureInPictureSampleBufferPlaybackDelegate {
     func pictureInPictureController(_: AVPictureInPictureController, setPlaying _: Bool) {}
+    func pictureInPictureController(
+        _: AVPictureInPictureController,
+        didTransitionToRenderSize _: CMVideoDimensions
+    ) {}
     func pictureInPictureControllerTimeRangeForPlayback(_: AVPictureInPictureController) -> CMTimeRange {
         CMTimeRange(start: .zero, duration: .positiveInfinity)
     }
