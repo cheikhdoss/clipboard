@@ -36,7 +36,7 @@ final class ClipboardBarView: UIView {
 
         // Logo
         logoLabel.text = "CF"
-        logoLabel.font = UIFont.systemFont(ofSize: 12, weight: .bold, design: .rounded)
+        logoLabel.font = roundedFont(ofSize: 12, weight: .bold)
         logoLabel.textColor = UIColor.systemOrange.withAlphaComponent(0.9)
         logoLabel.textAlignment = .center
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -54,7 +54,7 @@ final class ClipboardBarView: UIView {
 
         // Empty label
         emptyLabel.text = "\u{1F4CB} ClipFlow prêt"
-        emptyLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium, design: .rounded)
+        emptyLabel.font = roundedFont(ofSize: 12, weight: .medium)
         emptyLabel.textColor = UIColor.white.withAlphaComponent(0.2)
         emptyLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(emptyLabel)
@@ -112,6 +112,12 @@ final class ClipboardBarView: UIView {
     @objc private func didTapOpenApp() { onOpenApp?(); UIImpactFeedbackGenerator(style: .light).impactOccurred() }
 }
 
+private func roundedFont(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
+    let base = UIFont.systemFont(ofSize: size, weight: weight)
+    let descriptor = base.fontDescriptor.withDesign(.rounded) ?? base.fontDescriptor
+    return UIFont(descriptor: descriptor, size: size)
+}
+
 // MARK: - Collection View
 
 extension ClipboardBarView: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -144,7 +150,7 @@ final class ClipCell: UICollectionViewCell {
         iconView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(iconView)
 
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular, design: .monospaced)
+        label.font = UIFont.monospacedSystemFont(ofSize: 12, weight: .regular)
         label.textColor = UIColor.white.withAlphaComponent(0.85)
         label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false

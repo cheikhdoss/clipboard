@@ -47,6 +47,7 @@ targets:
     platform: iOS
     sources:
       - ClipFlowKeyboard
+      - Shared
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.clipflow.app.keyboard
       INFOPLIST_FILE: ClipFlowKeyboard/Info.plist
